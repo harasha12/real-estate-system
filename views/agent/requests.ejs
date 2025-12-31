@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pending Verification | Estate Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #4f46e5;
+    --warning: #d97706;
+    --bg-page: #f8fafc;
+    --text-main: #0f172a;
+    --text-light: #64748b;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-page);
+    margin: 0;
+    padding: 40px 20px;
+    color: var(--text-main);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .header h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    color: #1e293b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header .badge-count {
+    background: var(--warning);
+    color: white;
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+
+  /* Property Request Card */
+  .request-card {
+    background: white;
+    border-radius: 24px;
+    padding: 0;
+    margin-bottom: 25px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    display: flex;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+
+  .request-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+  }
+
+  /* Left Status Stripe */
+  .status-stripe {
+    width: 8px;
+    background: var(--warning);
+  }
+
+  .card-content {
+    flex: 1;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .prop-details h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .info-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .info-item {
+    font-size: 14px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .info-item b {
+    color: var(--text-main);
+  }
+
+  /* Action Button */
+  .verify-btn {
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .verify-btn:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 60px;
+    background: white;
+    border-radius: 24px;
+    border: 2px dashed #e2e8f0;
+  }
+
+  .empty-state i {
+    font-size: 50px;
+    color: #cbd5e1;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 650px) {
+    .card-content { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .verify-btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <a href="/agent/dashboard" style="text-decoration: none; color: var(--primary); font-weight: 600; font-size: 14px; display: block; margin-bottom: 15px;">
+      <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+    <h2>
+      <i class="fa-solid fa-clipboard-list"></i> Pending Requests
+      <span class="badge-count"><%= properties.length %></span>
+    </h2>
+  </div>
+
+  <% if (properties && properties.length > 0) { %>
+    <% properties.forEach(p => { %>
+      <div class="request-card">
+        <div class="status-stripe"></div>
+        <div class="card-content">
+          <div class="prop-details">
+            <h3><%= p.type %> Listing Request</h3>
+            <div class="info-row">
+              <div class="info-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Location: <b><%= p.location %></b></span>
+              </div>
+              <div class="info-item">
+                <i class="fa-solid fa-ruler-combined"></i>
+                <span>Area: <b><%= p.area_size %></b></span>
+              </div>
+              <div class="info-item">
+                <i class="fa-solid fa-clock"></i>
+                <span>Status: <b style="color: var(--warning);">Pending</b></span>
+              </div>
+            </div>
+          </div>
+
+          <a href="/agent/verify/<%= p.id %>" class="verify-btn">
+            Verify Now
+            <i class="fa-solid fa-chevron-right"></i>
+          </a>
+        </div>
+      </div>
+    <% }) %>
+  <% } else { %>
+    <div class="empty-state">
+      <i class="fa-solid fa-circle-check"></i>
+      <h3>All Caught Up!</h3>
+      <p style="color: var(--text-light);">There are no properties waiting for verification.</p>
+    </div>
+  <% } %>
+</div>
+
+</body>
+</html>

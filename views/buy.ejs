@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Buy Properties</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:Poppins;
+  background:#f1f5f9;
+  margin:0;
+  padding:40px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+}
+
+.card{
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 25px rgba(37,99,235,.45);
+}
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.info{
+  padding:16px;
+}
+
+.price{
+  font-size:18px;
+  font-weight:600;
+  color:#2563eb;
+}
+
+/* ACTION BUTTONS */
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
+.actions button{
+  flex:1;
+  padding:8px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:500;
+}
+
+.contact{
+  background:#2563eb;
+  color:#fff;
+}
+
+.save{
+  background:#e5e7eb;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Buy Properties</h2>
+
+<div class="grid">
+
+<% if (properties.length > 0) { %>
+  <% properties.forEach(p => { %>
+    <div class="card">
+      <img src="<%= p.image || '/images/CommercialNoImage.svg' %>">
+
+      <div class="info">
+        <h4><%= p.title %></h4>
+        <p><%= p.location %></p>
+        <div class="price">₹ <%= p.final_amount || p.market_amount %></div>
+
+        <!-- 🔒 ACTIONS (LOGIN REQUIRED) -->
+        <div class="actions">
+          <button class="contact" onclick="requireLogin()">Contact Owner</button>
+          <button class="save" onclick="requireLogin()">Save</button>
+        </div>
+
+      </div>
+    </div>
+  <% }) %>
+<% } else { %>
+  <p>No properties found</p>
+<% } %>
+
+</div>
+
+<script>
+function requireLogin(){
+  window.location.href = "/login";
+}
+</script>
+
+</body>
+</html>

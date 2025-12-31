@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Upload Verified Images</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --ink:#0f172a;
+  --muted:#64748b;
+  --primary:#2563eb;
+  --success:#22c55e;
+  --danger:#ef4444;
+  --border:#e5e7eb;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:Poppins, Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, #e0f2fe, transparent 40%),
+    radial-gradient(circle at 90% 20%, #dcfce7, transparent 40%),
+    var(--bg);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* CARD */
+.card{
+  width:520px;
+  background:var(--card);
+  border-radius:22px;
+  padding:34px;
+  box-shadow:0 30px 70px rgba(15,23,42,0.18);
+  text-align:center;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 36px 80px rgba(15,23,42,0.22);
+}
+
+h2{
+  margin:0;
+  font-size:22px;
+  font-weight:600;
+}
+
+.subtitle{
+  font-size:14px;
+  color:var(--muted);
+  margin:8px 0 26px;
+}
+
+/* FORM LAYOUT */
+form{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+/* DROP ZONE */
+.drop-zone{
+  border:2px dashed var(--border);
+  border-radius:18px;
+  padding:30px;
+  cursor:pointer;
+  transition:.25s ease;
+  background:#f9fafb;
+}
+
+.drop-zone:hover{
+  border-color:var(--primary);
+  background:#eff6ff;
+  box-shadow:0 12px 28px rgba(37,99,235,0.18);
+  transform:translateY(-2px);
+}
+
+.drop-zone.dragover{
+  border-color:var(--primary);
+  background:#e0f2fe;
+  box-shadow:0 16px 34px rgba(37,99,235,0.28);
+}
+
+.drop-zone b{
+  color:var(--ink);
+}
+
+.drop-zone p{
+  margin:6px 0 0;
+  font-size:13px;
+  color:var(--muted);
+}
+
+input[type="file"]{ display:none; }
+
+/* PREVIEW */
+.preview{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+  gap:12px;
+}
+
+.preview img{
+  width:100%;
+  height:82px;
+  object-fit:cover;
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+
+.preview img:hover{
+  transform:scale(1.05);
+  box-shadow:0 8px 18px rgba(0,0,0,0.22);
+  filter:brightness(1.05);
+}
+
+/* ERROR */
+.error{
+  color:var(--danger);
+  font-size:13px;
+  text-align:left;
+  min-height:18px;
+}
+
+/* PROGRESS */
+.progress{
+  height:10px;
+  background:#e5e7eb;
+  border-radius:8px;
+  overflow:hidden;
+  display:none;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(135deg,var(--primary),var(--success));
+  transition:width .2s;
+}
+
+/* BUTTON */
+button{
+  margin-top:6px;
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--success),#16a34a);
+  color:white;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease, filter .25s ease;
+  box-shadow:0 14px 28px rgba(34,197,94,0.40);
+}
+
+/* HOVER */
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 20px 40px rgba(34,197,94,0.55);
+  background:linear-gradient(135deg,#22c55e,#15803d);
+  filter:brightness(1.03);
+}
+
+button:active{
+  transform:translateY(0);
+  box-shadow:0 10px 22px rgba(34,197,94,0.40);
+  filter:brightness(0.97);
+}
+
+button:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+/* BADGE */
+.badge{
+  display:none;
+  margin-top:24px;
+  background:#dcfce7;
+  color:#166534;
+  padding:12px;
+  border-radius:14px;
+  font-size:14px;
+  font-weight:500;
+  box-shadow:0 8px 18px rgba(22,101,52,0.20);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>Upload Verified Images</h2>
+  <div class="subtitle">Drag & drop or select up to 5 images</div>
+
+  <form id="uploadForm"
+        method="POST"
+        action="/agent/upload-images/<%= property.id %>"
+        enctype="multipart/form-data">
+
+    <!-- DROP ZONE -->
+    <label class="drop-zone" id="dropZone">
+      📷 <b>Drop images here</b>
+      <p>or click to browse</p>
+      <input type="file" id="fileInput" name="images" multiple accept="image/*">
+    </label>
+
+    <div class="error" id="error"></div>
+
+    <div class="preview" id="preview"></div>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <button type="submit" id="submitBtn">Upload Images</button>
+  </form>
+
+  <div class="badge" id="verifiedBadge">
+    ✅ Images uploaded & verified by Admin
+  </div>
+
+</div>
+
+<script>
+const MAX_IMAGES = 5;
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
+const error = document.getElementById("error");
+const form = document.getElementById("uploadForm");
+const progress = document.querySelector(".progress");
+const bar = document.getElementById("progressBar");
+const badge = document.getElementById("verifiedBadge");
+const submitBtn = document.getElementById("submitBtn");
+const dropZone = document.getElementById("dropZone");
+
+function handleFiles(files){
+  error.textContent = "";
+  preview.innerHTML = "";
+
+  if(files.length > MAX_IMAGES){
+    error.textContent = `Maximum ${MAX_IMAGES} images allowed`;
+    fileInput.value = "";
+    return;
+  }
+
+  [...files].forEach(file=>{
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    preview.appendChild(img);
+  });
+}
+
+fileInput.addEventListener("change", e=>{
+  handleFiles(e.target.files);
+});
+
+/* DRAG & DROP */
+["dragenter","dragover"].forEach(event=>{
+  dropZone.addEventListener(event,e=>{
+    e.preventDefault();
+    dropZone.classList.add("dragover");
+  });
+});
+
+["dragleave","drop"].forEach(event=>{
+  dropZone.addEventListener(event,e=>{
+    e.preventDefault();
+    dropZone.classList.remove("dragover");
+  });
+});
+
+dropZone.addEventListener("drop", e=>{
+  fileInput.files = e.dataTransfer.files;
+  handleFiles(fileInput.files);
+});
+
+/* UPLOAD PROGRESS */
+form.addEventListener("submit", e=>{
+  e.preventDefault();
+
+  if(!fileInput.files.length){
+    error.textContent = "Please select images";
+    return;
+  }
+
+  const xhr = new XMLHttpRequest();
+  const formData = new FormData(form);
+
+  progress.style.display = "block";
+  submitBtn.disabled = true;
+
+  xhr.upload.onprogress = e=>{
+    if(e.lengthComputable){
+      bar.style.width = (e.loaded / e.total) * 100 + "%";
+    }
+  };
+
+  xhr.onload = ()=>{
+    if(xhr.status === 200){
+      badge.style.display = "block";
+      progress.style.display = "none";
+      submitBtn.style.display = "none";
+    }else{
+      error.textContent = "Upload failed";
+      submitBtn.disabled = false;
+      progress.style.display = "none";
+      bar.style.width = "0%";
+    }
+  };
+
+  xhr.open("POST", form.action);
+  xhr.send(formData);
+});
+</script>
+
+</body>
+</html>

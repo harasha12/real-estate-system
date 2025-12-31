@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Requests | Estate Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #4f46e5;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg-page: #f8fafc;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-page);
+    margin: 0;
+    padding: 40px 20px;
+    color: var(--text-main);
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Header Styling */
+  .header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  h2 i {
+    color: var(--primary);
+  }
+
+  /* Table Card Styling */
+  .table-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* For border radius to work */
+    border: 1px solid #e2e8f0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  th {
+    background: #fcfcfd;
+    padding: 16px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  td {
+    padding: 18px 20px;
+    font-size: 14px;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover {
+    background-color: #f8fafc;
+  }
+
+  /* Action Buttons */
+  .btn {
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .sold {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .sold:hover {
+    background: var(--success);
+    color: white;
+  }
+
+  .cancel {
+    background: #ffedd5;
+    color: #9a3412;
+  }
+
+  .cancel:hover {
+    background: var(--warning);
+    color: white;
+  }
+
+  /* Buyer Info Styling */
+  .buyer-name {
+    font-weight: 700;
+    color: var(--text-dark);
+    display: block;
+  }
+
+  .contact-info {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Empty State */
+  .empty-state {
+    padding: 60px 0;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  .empty-state i {
+    font-size: 40px;
+    margin-bottom: 15px;
+    opacity: 0.3;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .table-card {
+      overflow-x: auto;
+    }
+    table {
+      min-width: 700px;
+    }
+  }
+  .status-badge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-badge.completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.hold {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-flex">
+    <h2><i class="fa-solid fa-list-check"></i> Booking Requests</h2>
+    <div class="stats-label" style="font-size: 14px; color: var(--text-muted);">
+      Total Requests: <b><%= bookings ? bookings.length : 0 %></b>
+    </div>
+  </div>
+
+  <div class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>Property Location</th>
+        <th>Buyer Details</th>
+        <th>Contact Info</th>
+        <th>Status / Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if (bookings && bookings.length > 0) { %>
+        <% bookings.forEach(b => { %>
+          <tr>
+
+            <!-- PROPERTY -->
+            <td>
+              <div style="font-weight:600; color:#1e293b;">
+                <i class="fa-solid fa-location-dot" style="color:#4f46e5; margin-right:6px;"></i>
+                <%= b.location %>
+              </div>
+            </td>
+
+            <!-- BUYER -->
+            <td>
+              <span class="buyer-name"><%= b.buyer_name %></span>
+            </td>
+
+            <!-- CONTACT -->
+            <td>
+              <div class="contact-info">
+                <i class="fa-solid fa-phone"></i> <%= b.buyer_phone %>
+              </div>
+
+              <% if (b.buyer_email) { %>
+                <div class="contact-info">
+                  <i class="fa-solid fa-envelope"></i> <%= b.buyer_email %>
+                </div>
+              <% } %>
+            </td>
+
+            <!-- STATUS / ACTION -->
+            <td>
+              <% if (b.status === 'pending') { %>
+                <div style="display:flex; gap:8px;">
+                  <form method="POST" action="/agent/mark-sold/<%= b.property_id %>">
+                    <button class="btn sold">
+                      <i class="fa-solid fa-circle-check"></i> Mark Sold
+                    </button>
+                  </form>
+
+                  <form method="POST" action="/agent/cancel-booking/<%= b.property_id %>">
+                    <button class="btn cancel">
+                      <i class="fa-solid fa-circle-xmark"></i> Cancel
+                    </button>
+                  </form>
+                </div>
+              <% } else { %>
+                <%
+  const status = (b.status || "hold").toString().toUpperCase();
+%>
+
+<span class="status-badge <%= (b.status || "hold") %>">
+  <%= status %>
+</span>
+
+              <% } %>
+            </td>
+
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="4">
+            <div class="empty-state">
+              <i class="fa-solid fa-inbox"></i>
+              <p>No booking records found</p>
+            </div>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+</div>
+
+</body>
+</html>

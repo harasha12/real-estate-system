@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#0f172a;
+  --secondary:#2563eb;
+  --bg:#f8fafc;
+  --white:#fff;
+  --muted:#6b7280;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--bg);}
+.layout{display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  width:260px;
+  background:var(--primary);
+  padding:30px 20px;
+  color:#fff;
+}
+.logo{font-size:22px;font-weight:700;text-align:center;margin-bottom:40px;}
+.nav a{
+  display:block;
+  padding:14px 18px;
+  margin-bottom:10px;
+  border-radius:12px;
+  color:#cbd5e1;
+  cursor:pointer;
+}
+.nav a.active,.nav a:hover{
+  background:rgba(255,255,255,.12);
+  color:#fff;
+}
+.logout{margin-top:40px;color:#fecaca!important}
+
+/* MAIN */
+.main{flex:1;padding:30px 40px;}
+.topbar{display:flex;justify-content:space-between;margin-bottom:30px;}
+.badge{background:var(--secondary);color:#fff;padding:8px 18px;border-radius:20px}
+
+/* SECTIONS */
+.section{display:none;}
+.section.active{display:block}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px}
+.card{
+  background:var(--white);
+  padding:26px;
+  border-radius:18px;
+  box-shadow:0 20px 40px rgba(0,0,0,.08)
+}
+.card h4{font-size:13px;color:var(--muted);text-transform:uppercase}
+.card p{font-size:32px;font-weight:700;margin-top:10px}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+}
+th,td{padding:14px;border-bottom:1px solid #e5e7eb;text-align:left}
+th{background:#f1f5f9;color:#334155}
+
+.btn{
+  padding:6px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  color:white;
+}
+.approve{background:#16a34a}
+.reject{background:#dc2626}
+.pending{color:#f59e0b;font-weight:600}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">ESTATE ADMIN</div>
+  <div class="nav">
+  <a class="active" onclick="show('dashboard',this)">Dashboard</a>
+  <a onclick="show('agents',this)">Manage Agents</a>
+  <a onclick="show('addAgent',this)">➕ Add New Agent</a>
+  <a onclick="show('bookings',this)">Booking Monitor</a>
+  <a onclick="show('reports',this)">Reports</a>
+  <a href="/logout" class="logout">Logout</a>
+</div>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="topbar">
+  <h2>Admin Dashboard</h2>
+  <div class="badge">Administrator</div>
+</div>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="section active">
+  <div class="stats">
+    <div class="card">
+      <h4>Total Agents</h4>
+      <p><%= stats.totalAgents %></p>
+    </div>
+    <div class="card">
+      <h4>Pending Agents</h4>
+      <p><%= stats.pendingAgents %></p>
+    </div>
+    <div class="card">
+      <h4>Total Properties</h4>
+      <p><%= stats.totalProperties %></p>
+    </div>
+  </div>
+</section>
+<section id="addAgent" class="section">
+  <h3>Register New Agent</h3>
+
+  <div class="card">
+    <p style="margin-bottom:15px;color:#6b7280">
+      Create a new agent account to manage properties and bookings.
+    </p>
+
+    <a href="/admin/add-agent" class="btn approve">
+      ➕ Go to Agent Registration Page
+    </a>
+  </div>
+</section>
+
+<!-- AGENTS -->
+<section id="agents" class="section">
+<h3>Manage Agents</h3>
+
+<table>
+<tr><th>Name</th><th>Email</th><th>Status</th><th>Action</th></tr>
+
+<% agents.forEach(a => { %>
+<tr>
+  <td><%= a.name %></td>
+  <td><%= a.email %></td>
+  <td><%= a.status %></td>
+  <td>
+    <% if (a.status === 'pending') { %>
+      <a href="/admin/approve-agent/<%= a.id %>">Approve</a>
+      <a href="/admin/reject-agent/<%= a.id %>">Reject</a>
+    <% } %>
+  </td>
+</tr>
+<% }) %>
+</table>
+</section>
+
+
+<!-- BOOKINGS -->
+<section id="bookings" class="section">
+<h3>Booking Monitor</h3>
+
+<table>
+<tr>
+  <th>Location</th>
+  <th>Buyer</th>
+  <th>Phone</th>
+  <th>Agent</th>
+  <th>Status</th>
+</tr>
+
+<% bookings.forEach(b => { %>
+<tr>
+  <td><%= b.location %></td>
+  <td><%= b.buyer_name %></td>
+  <td><%= b.buyer_phone %></td>
+  <td><%= b.agent_name || 'Unassigned' %></td>
+  <td><%= b.booking_status %></td>
+</tr>
+<% }) %>
+</table>
+</section>
+
+<!-- REPORTS -->
+<section id="reports" class="section">
+<h3>Reports</h3>
+<p>Charts can be added here (Chart.js ready)</p>
+<ul>
+  <li>Total Agents: <%= stats.totalAgents %></li>
+  <li>Total Properties: <%= stats.totalProperties %></li>
+</ul>
+</section>
+
+</main>
+</div>
+
+<script>
+function show(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav a').forEach(a=>a.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+
+</body>
+</html>

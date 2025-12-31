@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Agent Analytics</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+  --ink:#0b1220;
+  --muted:#6b7280;
+  --accent:#0ea5e9;
+  --success:#22c55e;
+  --glass:rgba(255,255,255,0.65);
+  --stroke:rgba(255,255,255,0.35);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:Poppins, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, #e0f2fe, transparent 45%),
+    radial-gradient(circle at 90% 20%, #fef3c7, transparent 40%),
+    #f8fafc;
+  color:var(--ink);
+  display:flex;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar{
+  width:220px;
+  background:linear-gradient(180deg,#020617,#020617);
+  min-height:100vh;
+  padding:26px 18px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* LOGO */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:36px;
+}
+
+.logo-icon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#0ea5e9,#22c55e);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+}
+
+.logo-text{
+  color:#e5e7eb;
+  font-weight:600;
+  font-size:16px;
+}
+
+/* NAV SECTION */
+.nav-section{
+  margin-bottom:26px;
+}
+
+.nav-title{
+  font-size:11px;
+  letter-spacing:1px;
+  color:#64748b;
+  margin-bottom:12px;
+}
+
+/* NAV BUTTON */
+.nav-btn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  border-radius:14px;
+  margin-bottom:8px;
+  text-decoration:none;
+  color:#cbd5f5;
+  font-size:14px;
+  transition:0.25s;
+}
+
+.nav-btn span{
+  font-size:16px;
+}
+
+.nav-btn:hover{
+  background:rgba(14,165,233,0.18);
+  color:#ffffff;
+}
+
+/* ACTIVE DASHBOARD */
+.nav-btn.active{
+  background:#0ea5e9;
+  color:white;
+}
+
+/* LOGOUT */
+.nav-btn.logout{
+  margin-top:auto;
+  background:rgba(239,68,68,0.18);
+  color:#f87171;
+}
+
+.nav-btn.logout:hover{
+  background:#ef4444;
+  color:white;
+}
+
+/* ================= MAIN ================= */
+.main{
+  flex:1;
+  padding:40px 50px;
+}
+
+/* ================= HEADER ================= */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+}
+
+.header h1{
+  margin:0;
+  font-size:28px;
+  font-weight:600;
+}
+
+.header span{
+  color:var(--accent);
+  font-weight:500;
+}
+
+/* ================= DASH GRID ================= */
+.grid{
+  margin-top:40px;
+  display:grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap:35px;
+}
+
+/* ================= GLASS CARD ================= */
+.glass{
+  background:var(--glass);
+  backdrop-filter: blur(20px);
+  border:1px solid var(--stroke);
+  border-radius:26px;
+  padding:30px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.08);
+}
+
+/* ================= METRICS ================= */
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.metric{
+  padding:22px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.75);
+}
+
+.metric h4{
+  margin:0;
+  font-size:13px;
+  color:var(--muted);
+  font-weight:500;
+}
+
+.metric p{
+  margin-top:10px;
+  font-size:30px;
+  font-weight:600;
+  color:var(--accent);
+}
+
+/* ================= CHARTS ================= */
+.chart-title{
+  font-size:15px;
+  font-weight:600;
+  margin-bottom:18px;
+}
+
+.right-stack{
+  display:grid;
+  gap:30px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:1100px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:768px){
+  .sidebar{ display:none; }
+  .main{ padding:30px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+<div class="sidebar">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <div class="logo-icon">A</div>
+    <div class="logo-text">Agent Panel</div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-section">
+    <div class="nav-title">DASHBOARD</div>
+    <a class="nav-btn active" href="/agent/dashboard">
+      <span>🏠</span> Dashboard
+    </a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-title">MANAGE</div>
+    <a class="nav-btn" href="/agent/requests">
+      <span>✔</span> Verify Properties
+    </a>
+    <a class="nav-btn" href="/agent/bookings">
+      <span>📅</span> Bookings
+    </a>
+    <a class="nav-btn" href="/agent/enquiries">
+      <span>💬</span> Enquiries
+    </a>
+  </div>
+
+  <a class="nav-btn logout" href="/logout">
+    <span>⎋</span> Logout
+  </a>
+</div>
+
+<!-- ================= MAIN ================= -->
+<div class="main">
+
+  <div class="header">
+    <h1>Agent Overview</h1>
+    <div>Welcome <span><%= agent.name %></span></div>
+  </div>
+
+  <div class="grid">
+
+    <div class="glass">
+      <div class="metrics">
+        <div class="metric">
+          <h4>Total Properties</h4>
+          <p><%= stats?.totalProperties || 0 %></p>
+        </div>
+
+        <div class="metric">
+          <h4>Live Listings</h4>
+          <p><%= stats?.liveProperties || 0 %></p>
+        </div>
+
+        <div class="metric">
+          <h4>Enquiries</h4>
+          <p style="color:var(--success)">
+            <%= stats?.enquiriesCount || 0 %>
+          </p>
+        </div>
+      </div>
+
+      <div style="margin-top:35px">
+        <div class="chart-title">Property Growth</div>
+        <canvas id="propertiesChart"></canvas>
+      </div>
+    </div>
+
+    <div class="right-stack">
+      <div class="glass">
+        <div class="chart-title">Weekly Enquiries</div>
+        <canvas id="enquiriesChart"></canvas>
+      </div>
+
+      <div class="glass">
+        <div class="chart-title">Quick Insight</div>
+        <p style="color:var(--muted); font-size:14px; line-height:1.6">
+          Listings and enquiries show a steady upward trend.  
+          Focus on premium properties to maximize conversion.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+new Chart(document.getElementById("propertiesChart"), {
+  type:"line",
+  data:{
+    labels:["Jan","Feb","Mar","Apr","May","Jun"],
+    datasets:[{
+      //data:[2,4,7,11,15,<%= stats?.totalProperties || 0 %>],
+      borderColor:"#0ea5e9",
+      backgroundColor:"rgba(14,165,233,0.18)",
+      fill:true,
+      tension:0.45
+    }]
+  },
+  options:{ plugins:{ legend:{ display:false } } }
+});
+
+new Chart(document.getElementById("enquiriesChart"), {
+  type:"bar",
+  data:{
+    labels:["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    datasets:[{
+      //data:[1,2,3,5,4,6,<%= (stats && stats.enquiriesCount) ? stats.enquiriesCount : 0 %>],
+      backgroundColor:"#22c55e"
+    }]
+  },
+  options:{ plugins:{ legend:{ display:false } } }
+});
+</script>
+
+</body>
+</html>

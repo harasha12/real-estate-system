@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Bookings</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #eef2f3, #f9f9f9);
+      min-height: 100vh;
+      padding: 40px;
+    }
+
+    .box {
+      width: 95%;
+      max-width: 1200px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #1e293b;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    thead tr {
+      background: linear-gradient(135deg, #2563eb, #1e40af);
+      color: #fff;
+    }
+
+    th {
+      padding: 14px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 14px;
+      text-align: center;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    tr:hover {
+      background-color: #eef2ff;
+      transition: 0.3s;
+    }
+
+    .status {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .status.pending {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .status.approved {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .status.rejected {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #64748b;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        font-size: 12px;
+      }
+    }
+    .status.completed {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.status.cancelled {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.status.hold {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>👋 Welcome, <%= agent.name || 'Agent' %></h2>
+  <p style="text-align:center; color:#64748b; margin-top:-10px;">
+    Agent • Bookings
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Buyer</th>
+        <th>Phone</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if (bookings && bookings.length > 0) { %>
+        <% bookings.forEach(b => { %>
+          <tr>
+            <td><%= b.buyer_name %></td>
+            <td><%= b.buyer_phone %></td>
+            <td>
+              <span class="status <%= (b.status || b.booking_status || '').toLowerCase() %>">
+                <%= b.status || b.booking_status %>
+              </span>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="3" class="empty">No bookings found</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+
+</body>
+</html>

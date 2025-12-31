@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join Estate Pro | Register</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg-gradient);
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-dark);
+  }
+
+  .register-box {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    margin: 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .header h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -1px;
+    color: var(--primary);
+  }
+
+  .header p {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  /* Form Group Styling */
+  .input-group {
+    position: relative;
+    margin-bottom: 18px;
+  }
+
+  .input-group i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 16px;
+    transition: color 0.3s;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    border-radius: 12px;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+
+  input:focus {
+    border-color: var(--primary);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+  }
+
+  input:focus + i {
+    color: var(--primary);
+  }
+
+  /* Button Styling */
+  button {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+  }
+
+  /* Link Styling */
+  .footer-links {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: var(--text-light);
+  }
+
+  .footer-links a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+
+  /* Animation */
+  .register-box {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="register-box">
+  <div class="header">
+    <h2>Create Account</h2>
+    <p>Join Estate Pro to start your property journey</p>
+  </div>
+
+  <form method="POST" action="/register">
+    <div class="input-group">
+      <input name="name" placeholder="Full Name" required>
+      <i class="fa-solid fa-user"></i>
+    </div>
+
+    <div class="input-group">
+      <input name="email" type="email" placeholder="Email Address" required>
+      <i class="fa-solid fa-envelope"></i>
+    </div>
+
+    <div class="input-group">
+      <input name="phone" placeholder="Phone Number" required>
+      <i class="fa-solid fa-phone"></i>
+    </div>
+
+    <div class="input-group">
+      <input name="password" type="password" placeholder="Create Password" required>
+      <i class="fa-solid fa-lock"></i>
+    </div>
+
+    <button type="submit">
+      Create Account
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+  </form>
+
+  <div class="footer-links">
+    Already have an account? <a href="/">Login here</a>
+  </div>
+</div>
+
+</body>
+</html>

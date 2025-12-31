@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Available Properties | Estate Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #4f46e5;
+    --bg-page: #fdfdfd;
+    --text-dark: #0f172a;
+    --text-light: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f1f5f9;
+    margin: 0;
+    padding-bottom: 50px;
+    color: var(--text-dark);
+  }
+
+  .header-section {
+    background: white;
+    padding: 40px 20px;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 30px;
+  }
+
+  .header-section h2 {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -1px;
+  }
+
+  .container {
+    width: 95%;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Property Card */
+  .card {
+    display: flex;
+    background: white;
+    margin-bottom: 24px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03), 0 10px 15px -3px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #f1f5f9;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+  }
+
+  /* Image Section */
+  .image-box {
+    width: 35%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: zoom-in;
+    transition: transform 0.5s ease;
+  }
+
+  .card:hover .image-box img {
+    transform: scale(1.1);
+  }
+
+  /* Badge on image */
+  .status-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .badge-available { background: rgba(16, 185, 129, 0.9); color: white; }
+  .badge-hold { background: rgba(245, 158, 11, 0.9); color: white; }
+  .badge-sold { background: rgba(239, 68, 68, 0.9); color: white; }
+
+  /* Details Section */
+  .details {
+    width: 65%;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .details .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .property-type {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-dark);
+  }
+
+  .location {
+    color: var(--text-light);
+    font-size: 14px;
+    margin: 4px 0 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .specs-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .spec-item {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  .spec-item b {
+    display: block;
+    color: var(--text-dark);
+    font-size: 15px;
+  }
+
+  .price-info {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .final-price {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .view-btn {
+    text-decoration: none;
+    background: #f1f5f9;
+    color: var(--primary);
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .view-btn:hover {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* Popup */
+  .popup {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.95);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: zoom-out;
+  }
+
+  .popup img {
+    max-width: 85%;
+    max-height: 85%;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: zoomIn 0.3s ease;
+  }
+
+  @keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* Mobile Layout */
+  @media (max-width: 768px) {
+    .card { flex-direction: column; }
+    .image-box { width: 100%; height: 200px; }
+    .details { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header-section">
+  <h2>Explore Available Properties</h2>
+  <p style="color: var(--text-light);">Find your perfect property from our verified listings.</p>
+</div>
+
+<div class="container">
+<% properties.forEach(p => { %>
+
+  <div class="card">
+    <div class="image-box">
+      <span class="status-badge <%= p.booking_status === 'available' ? 'badge-available' : (p.booking_status === 'hold' ? 'badge-hold' : 'badge-sold') %>">
+        <%= p.booking_status %>
+      </span>
+      <img
+        src="<%= p.main_image ? '/uploads/properties/' + p.main_image : 'https://via.placeholder.com/400x300?text=No+Image' %>"
+        onclick="openPopup(this.src)"
+      >
+    </div>
+
+    <div class="details">
+      <div class="top-row">
+        <div>
+          <h3 class="property-type"><%= p.type %></h3>
+          <div class="location">
+            <i class="fa-solid fa-location-dot"></i> <%= p.location %>
+          </div>
+        </div>
+      </div>
+
+      <div class="specs-grid">
+        <div class="spec-item">
+          Area Size
+          <b><i class="fa-solid fa-ruler-combined"></i> <%= p.area_size %></b>
+        </div>
+        <div class="spec-item">
+          Market Value
+          <b>₹ <%= p.market_amount || "N/A" %></b>
+        </div>
+        <div class="spec-item">
+          Govt Value
+          <b>₹ <%= p.govt_amount || "N/A" %></b>
+        </div>
+      </div>
+
+      <div class="price-info">
+        <div>
+          <span style="font-size: 12px; color: var(--text-light); display: block;">Best Offer Price</span>
+          <span class="final-price">₹ <%= p.final_amount || "N/A" %></span>
+        </div>
+        <a href="/property/<%= p.id %>" class="view-btn">View Details</a>
+      </div>
+    </div>
+  </div>
+
+<% }) %>
+</div>
+
+<div id="popup" class="popup" onclick="closePopup()">
+  <img id="popupImg">
+</div>
+
+<script>
+  function openPopup(src) {
+    document.getElementById("popupImg").src = src;
+    document.getElementById("popup").style.display = "flex";
+  }
+
+  function closePopup() {
+    document.getElementById("popup").style.display = "none";
+  }
+</script>
+
+</body>
+</html>

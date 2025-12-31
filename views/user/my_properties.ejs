@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Properties | Estate Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --primary: #4f46e5;
+    --bg-light: #f1f5f9;
+    --text-main: #1e293b;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-light);
+    margin: 0;
+    padding: 40px 20px;
+    color: var(--text-main);
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .header-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    color: #0f172a;
+  }
+
+  /* Dashboard Grid */
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .property-card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  }
+
+  .property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    border-color: var(--primary);
+  }
+
+  .prop-info h3 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Status Badges */
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+  }
+
+  .badge-active { background: #dcfce7; color: #166534; }
+  .badge-pending { background: #fef9c3; color: #854d0e; }
+
+  .details {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+
+  .details p { margin: 5px 0; }
+
+  /* Buttons */
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s;
+  }
+
+  .action-btn:hover {
+    background: #4338ca;
+  }
+
+  .back-btn {
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+  }
+
+  .back-btn:hover { color: var(--primary); }
+
+  /* Empty State */
+  .empty-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    background: #fff;
+    border-radius: 20px;
+    color: #94a3b8;
+  }
+  /* ================= TOP NAV ================= */
+.navbar{
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  padding:18px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  font-weight:600;
+  letter-spacing:.5px;
+}
+
+.nav-links a{
+  margin-left:24px;
+  text-decoration:none;
+  font-size:14px;
+  color:var(--muted);
+}
+
+.nav-links a:hover{
+  color:var(--primary);
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="brand">REAL ESTATE</div>
+
+  <div class="nav-links">
+    <a href="/user/dashboard">Dashboard</a>
+    <a href="/user/sell">Sell</a>
+    <a href="/properties">Buy</a>
+    <a href="/user/my-properties">My Properties</a>
+    <a href="/logout" style="color:#dc2626">Logout</a>
+  </div>
+</div>
+<div class="container">
+  <div class="header-area">
+    <a href="/user/dashboard" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Dashboard
+    </a>
+    <h2>My Properties</h2>
+    <div style="width: 80px;"></div> </div>
+
+  <div class="property-grid">
+    <% if (properties.length > 0) { %>
+      <% properties.forEach(p => { %>
+        <div class="property-card">
+          <div>
+            <span class="badge <%= p.status === 'Active' ? 'badge-active' : 'badge-pending' %>">
+              <%= p.status %>
+            </span>
+            
+            <div class="prop-info">
+              <h3><i class="fa-solid fa-house-chimney"></i> <%= p.type %></h3>
+              <div class="details">
+                <p><i class="fa-solid fa-hashtag"></i> ID: #<%= p.id %></p>
+                <p><i class="fa-solid fa-calendar-days"></i> Listed on: Recently</p>
+              </div>
+            </div>
+          </div>
+
+          <a href="/user/upload-images/<%= p.id %>" class="action-btn">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Upload Images
+          </a>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="empty-msg">
+        <i class="fa-solid fa-folder-open" style="font-size: 40px; margin-bottom: 10px;"></i>
+        <p>No properties listed yet.</p>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+</body>
+</html>

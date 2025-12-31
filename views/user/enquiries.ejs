@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Send Enquiry | Estate Pro</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --accent: #0ea5e9; /* Sky Blue */
+    --accent-soft: #e0f2fe;
+    --text-main: #0f172a;
+    --text-light: #64748b;
+    --bg-page: #f8fafc;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-page);
+    /* Subtle geometric pattern background */
+    background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .enquiry-container {
+    display: flex;
+    max-width: 850px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Left Side - Info Panel */
+  .info-panel {
+    flex: 1;
+    background: var(--accent);
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+    padding: 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .info-panel h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .info-panel p {
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin-bottom: 30px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .contact-item i {
+    width: 35px;
+    height: 35px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Right Side - Form */
+  .form-panel {
+    flex: 1.2;
+    padding: 45px;
+  }
+
+  .form-panel h3 {
+    margin-top: 0;
+    font-size: 22px;
+    color: var(--text-main);
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    background: #fcfcfc;
+    transition: all 0.2s;
+  }
+
+  input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: white;
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  textarea {
+    height: 100px;
+    resize: none;
+  }
+
+  button {
+    width: 100%;
+    background: var(--text-main);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    background: #334155;
+    transform: translateY(-2px);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .enquiry-container {
+      flex-direction: column;
+    }
+    .info-panel {
+      padding: 30px;
+    }
+    .form-panel {
+      padding: 30px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="enquiry-container">
+  <div class="info-panel">
+    <h2>Let's Talk About Your Dream Home</h2>
+    <p>Have questions about this property? Send us a message and our expert agent will guide you through the process.</p>
+    
+    <div class="contact-item">
+      <i class="fa-solid fa-clock"></i>
+      <span>Response within 2-4 hours</span>
+    </div>
+    <div class="contact-item">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>Verified Property Agent</span>
+    </div>
+  </div>
+
+  <div class="form-panel">
+    <h3>Send an Enquiry</h3>
+    
+    <form method="POST" action="/enquiry">
+      <input type="hidden" name="property_id" value="<%= propertyId %>">
+      <input type="hidden" name="agent_id" value="<%= agentId %>">
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="buyer_name" placeholder="Enter your name" required>
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" name="buyer_phone" placeholder="+91 00000 00000" required>
+      </div>
+
+      <div class="form-group">
+        <label>How can we help?</label>
+        <textarea name="message" placeholder="Ask about price, location, or schedule a visit..."></textarea>
+      </div>
+
+      <button type="submit">Send Enquiry</button>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>

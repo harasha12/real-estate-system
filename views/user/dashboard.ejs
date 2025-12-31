@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>User Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --ink:#0f172a;
+  --muted:#64748b;
+  --primary:#2563eb;
+  --accent:#22c55e;
+  --border:#e5e7eb;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:Poppins, Arial, sans-serif;
+}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 10%, #dbeafe, transparent 40%),
+    radial-gradient(circle at 85% 20%, #dcfce7, transparent 40%),
+    var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+/* ================= TOP NAV ================= */
+.navbar{
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  padding:18px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  font-weight:600;
+  letter-spacing:.5px;
+}
+
+.nav-links a{
+  margin-left:24px;
+  text-decoration:none;
+  font-size:14px;
+  color:var(--muted);
+}
+
+.nav-links a:hover{
+  color:var(--primary);
+}
+
+/* ================= MAIN ================= */
+.container{
+  max-width:1200px;
+  margin:40px auto;
+  padding:0 28px;
+}
+
+/* HERO */
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:36px;
+}
+
+.hero h1{
+  font-size:28px;
+  font-weight:600;
+}
+
+.hero p{
+  font-size:14px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+/* QUICK ACTION */
+.quick-action a{
+  background:linear-gradient(135deg,var(--primary),#1d4ed8);
+  color:white;
+  padding:12px 20px;
+  border-radius:14px;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+  box-shadow:0 18px 35px rgba(37,99,235,.35);
+}
+
+.quick-action a:hover{
+  transform:translateY(-2px);
+}
+
+/* ================= STATS ================= */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:26px;
+  margin-bottom:42px;
+}
+
+.stat{
+  background:var(--card);
+  border-radius:22px;
+  padding:26px;
+  border:1px solid var(--border);
+  position:relative;
+}
+
+.stat::after{
+  content:"";
+  position:absolute;
+  inset:auto 0 0 0;
+  height:4px;
+  border-radius:0 0 22px 22px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+}
+
+.stat h4{
+  font-size:13px;
+  color:var(--muted);
+}
+
+.stat p{
+  margin-top:10px;
+  font-size:30px;
+  font-weight:600;
+}
+
+/* ================= PANELS ================= */
+.panels{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:34px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:30px;
+  border:1px solid var(--border);
+}
+
+.card h3{
+  font-size:17px;
+  font-weight:600;
+  margin-bottom:18px;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:12px 10px;
+  font-size:14px;
+  border-bottom:1px solid var(--border);
+}
+
+th{
+  text-align:left;
+  color:var(--muted);
+}
+
+/* STATUS */
+.badge{
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:500;
+}
+
+.approved{ background:#dcfce7; color:#166534; }
+.pending{ background:#fef3c7; color:#92400e; }
+
+/* NOTIFICATION */
+.notice{
+  background:#f8fafc;
+  border-left:4px solid var(--primary);
+  padding:14px;
+  border-radius:12px;
+  font-size:13px;
+  margin-bottom:14px;
+}
+
+/* FOOTER */
+.footer{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:50px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .panels{ grid-template-columns:1fr; }
+  .hero{ flex-direction:column; align-items:flex-start; gap:16px; }
+}/* ================= INTERACTIVE STATES ================= */
+
+/* NAV LINKS */
+.nav-links a{
+  position:relative;
+  padding-bottom:6px;
+  transition:color .2s ease;
+}
+
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:0%;
+  height:2px;
+  background:var(--primary);
+  transition:.25s;
+}
+
+.nav-links a:hover::after{
+  width:100%;
+}
+
+/* ACTIVE NAV */
+.nav-links a.active{
+  color:var(--primary);
+  font-weight:500;
+}
+
+.nav-links a.active::after{
+  width:100%;
+}
+
+/* BUTTON FEEL (CTA + LINKS) */
+.quick-action a,
+.card a{
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease,
+    background .15s ease;
+}
+
+.quick-action a:hover,
+.card a:hover{
+  transform:translateY(-2px);
+}
+
+.quick-action a:active,
+.card a:active{
+  transform:translateY(0);
+  box-shadow:0 8px 18px rgba(0,0,0,.25) inset;
+}
+
+/* CARD CLICK FEEDBACK */
+.card{
+  cursor:default;
+}
+
+.card:active{
+  transform:scale(0.99);
+}
+
+/* TABLE ROW HOVER */
+table tr:not(:first-child):hover{
+  background:#f8fafc;
+}
+
+/* ACCESSIBILITY */
+a:focus-visible{
+  outline:3px solid rgba(37,99,235,.35);
+  outline-offset:3px;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="brand">REAL ESTATE</div>
+
+  <div class="nav-links">
+    <a href="/user/dashboard">Dashboard</a>
+    <a href="/user/sell">Sell</a>
+    <a href="/properties">Buy</a>
+    <a href="/user/my-properties">My Properties</a>
+    <a href="/logout" style="color:#dc2626">Logout</a>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <h1>Hello, <%= user.name %> 👋</h1>
+      <p>Here’s a quick overview of your property activity</p>
+    </div>
+
+    <div class="quick-action">
+      <a href="/user/sell">+ Sell New Property</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <!-- STATS -->
+<div class="stats">
+
+  <div class="stat">
+    <h4>Total Listings</h4>
+    <p><%= stats?.totalListings || 0 %></p>
+  </div>
+
+  <div class="stat">
+    <h4>Active Properties</h4>
+    <p><%= stats?.activeProperties || 0 %></p>
+  </div>
+
+  <div class="stat">
+    <h4>Sold Properties</h4>
+    <p><%= stats?.soldProperties || 0 %></p>
+  </div>
+
+</div>
+
+
+
+  <!-- PANELS -->
+  <div class="panels">
+
+    <!-- ACTIVITY -->
+    <div class="card">
+      <h3>Recent Activity</h3>
+
+     <table>
+  <tr>
+    <th>Property</th>
+    <th>Status</th>
+  </tr>
+
+  <% if (recentProperties.length > 0) { %>
+    <% recentProperties.forEach(p => { %>
+      <tr>
+        <td><%= p.title || p.location %></td>
+        <td>
+          <% if (p.booking_status === 'hold') { %>
+            <span class="badge pending">HOLD</span>
+          <% } else if (p.status === 'live') { %>
+            <span class="badge approved">LIVE</span>
+          <% } else { %>
+            <span class="badge pending"><%= p.status.toUpperCase() %></span>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+  <% } else { %>
+    <tr>
+      <td colspan="2" style="color:var(--muted)">No recent activity</td>
+    </tr>
+  <% } %>
+</table>
+
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="card">
+  <h3>Notifications</h3>
+
+  <% if (
+    notifications?.verified?.length ||
+    notifications?.enquiries?.length ||
+    notifications?.priceUpdates?.length
+  ) { %>
+
+    <% notifications.verified.forEach(n => { %>
+      <div class="notice" style="border-left-color:#22c55e">
+        ✔ Property verified by agent – <b><%= n.location %></b>
+      </div>
+    <% }) %>
+
+    <% notifications.enquiries.forEach(n => { %>
+      <div class="notice" style="border-left-color:#f59e0b">
+        📞 Buyer enquiry accepted – <b><%= n.location %></b>
+      </div>
+    <% }) %>
+
+    <% notifications.priceUpdates.forEach(n => { %>
+      <div class="notice" style="border-left-color:#2563eb">
+  💰 Price updated from 
+  <b>₹<%= Number(n.market_amount).toLocaleString('en-IN') %></b>
+  →
+  <b>₹<%= Number(n.final_amount).toLocaleString('en-IN') %></b>
+</div>
+
+    <% }) %>
+
+  <% } else { %>
+    <div class="notice">No new notifications</div>
+  <% } %>
+</div>
+
+
+  <div class="footer">
+    © <%= new Date().getFullYear() %> Real Estate Management System
+  </div>
+
+</div>
+<script>
+  // Highlight active nav link automatically
+  const links = document.querySelectorAll(".nav-links a");
+  const currentPath = window.location.pathname;
+
+  links.forEach(link => {
+    if (link.getAttribute("href") === currentPath) {
+      link.classList.add("active");
+    }
+  });
+</script>
+
+</body>
+</html>

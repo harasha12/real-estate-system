@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Property Details</title>
+  <style>
+    :root{
+      --bg:#f1f5f9;
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --primary:#2563eb;
+      --success:#16a34a;
+      --warning:#f59e0b;
+      --danger:#dc2626;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, #bfdbfe 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #fee2e2 0, transparent 55%),
+        var(--bg);
+      color:var(--ink);
+    }
+
+    .box{
+      width:900px;
+      max-width:95%;
+      margin:30px auto;
+      background:var(--card);
+      padding:22px 22px 26px;
+      border-radius:20px;
+      box-shadow:0 22px 48px rgba(15,23,42,0.18);
+      border:1px solid var(--border);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .box::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 0 0,rgba(37,99,235,0.06),transparent 55%),
+        radial-gradient(circle at 100% 100%,rgba(249,115,22,0.08),transparent 55%);
+      opacity:0.7;
+      pointer-events:none;
+    }
+
+    .box-inner{
+      position:relative;
+      z-index:1;
+    }
+
+    h2{
+      margin:0 0 4px;
+      font-size:22px;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    h2::before{
+      content:"🏡";
+      font-size:22px;
+    }
+
+    .location-line{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: minmax(0,1.4fr) minmax(0,1fr);
+      gap:20px;
+      align-items:flex-start;
+    }
+
+    /* MAIN IMAGE */
+    .main-img-wrap{
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 18px 40px rgba(15,23,42,0.25);
+      cursor:pointer;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+
+    .main-img{
+      width:100%;
+      height:320px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .main-img-wrap:hover{
+      transform:translateY(-3px);
+      box-shadow:0 24px 56px rgba(15,23,42,0.30);
+    }
+
+    .img-badge{
+      position:absolute;
+      bottom:12px;
+      left:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      background:rgba(15,23,42,0.75);
+      color:#e5e7eb;
+      font-size:11px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    /* RIGHT INFO PANEL */
+    .info-panel{
+      background:#f9fafb;
+      border-radius:16px;
+      padding:14px 16px 16px;
+      border:1px solid var(--border);
+    }
+
+    .section-title{
+      font-size:15px;
+      font-weight:600;
+      margin:4px 0 8px;
+    }
+
+    .price-item{
+      font-size:13px;
+      color:var(--muted);
+      margin:3px 0;
+    }
+
+    .price-item span{
+      font-weight:600;
+      color:var(--ink);
+    }
+
+    /* STATUS */
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 11px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .status-available{
+      background:rgba(22,163,74,0.10);
+      color:var(--success);
+      border:1px solid rgba(22,163,74,0.6);
+    }
+
+    .status-hold{
+      background:rgba(245,158,11,0.10);
+      color:var(--warning);
+      border:1px solid rgba(245,158,11,0.6);
+    }
+
+    .status-sold{
+      background:rgba(248,113,113,0.10);
+      color:var(--danger);
+      border:1px solid rgba(248,113,113,0.7);
+    }
+
+    .booking-btn{
+      display:inline-block;
+      padding:10px 18px;
+      border-radius:999px;
+      background:linear-gradient(135deg,var(--primary),#1d4ed8);
+      color:white;
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+      margin-top:8px;
+      box-shadow:0 14px 30px rgba(37,99,235,0.45);
+      transition:transform .2s, box-shadow .2s, background .2s;
+    }
+
+    .booking-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 18px 40px rgba(37,99,235,0.55);
+      background:linear-gradient(135deg,#1d4ed8,#1e40af);
+    }
+
+    .status-text{
+      font-size:13px;
+      margin-top:8px;
+    }
+
+    /* CONTACT */
+    .contact-block{
+      margin-top:14px;
+      padding-top:10px;
+      border-top:1px dashed var(--border);
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .contact-block b{
+      color:var(--ink);
+    }
+
+    /* POPUP */
+    .popup{
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(15,23,42,0.92);
+      z-index:1000;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+    }
+
+    .popup-main{
+      max-width:88%;
+      max-height:70%;
+      border-radius:14px;
+      margin-bottom:16px;
+      box-shadow:0 24px 60px rgba(0,0,0,0.6);
+    }
+
+    .thumbs{
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      max-width:88%;
+      padding:10px;
+      background:#020617;
+      border-radius:10px;
+      border:1px solid rgba(148,163,184,0.5);
+    }
+
+    .thumbs img{
+      height:78px;
+      cursor:pointer;
+      border-radius:8px;
+      border:2px solid transparent;
+      transition:border-color .18s, transform .18s;
+    }
+
+    .thumbs img:hover{
+      border-color:#38bdf8;
+      transform:translateY(-1px);
+    }
+
+    .close{
+      color:#e5e7eb;
+      position:absolute;
+      top:18px;
+      right:26px;
+      font-size:26px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    @media(max-width:768px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+      .main-img{
+        height:260px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <div class="box-inner">
+    <h2><%= p.type %></h2>
+    <div class="location-line">📍 <%= p.location %></div>
+
+    <div class="layout">
+      <!-- LEFT: MAIN IMAGE -->
+      <div>
+        <% 
+          const mainImg = images.find(i => i.uploaded_by === 'agent') 
+            || images[0]; 
+        %>
+
+        <% if(mainImg) { %>
+          <div class="main-img-wrap" onclick="openGallery('<%= mainImg.image_path %>')">
+            <img 
+              src="/uploads/properties/<%= mainImg.image_path %>" 
+              class="main-img"
+              alt="Main property image"
+            >
+            <div class="img-badge">
+              📸 Property photos
+            </div>
+          </div>
+        <% } else { %>
+          <p>No images uploaded</p>
+        <% } %>
+      </div>
+
+      <!-- RIGHT: DETAILS / PRICE / STATUS / CONTACT -->
+      <div class="info-panel">
+        <div class="section-title">Price Details</div>
+        <p class="price-item"><b>Market Price:</b> <span>₹ <%= p.market_amount %></span></p>
+        <p class="price-item"><b>Government Value:</b> <span>₹ <%= p.govt_amount %></span></p>
+        <p class="price-item"><b>Final Price:</b> <span>₹ <%= p.final_amount %></span></p>
+
+        <div style="margin-top:10px;">
+          <div class="section-title" style="margin-bottom:6px;">Booking Status</div>
+
+          <% if(p.booking_status === 'available') { %>
+            <span class="status-pill status-available">● Available</span>
+            <br>
+            <a 
+              href="/booking/<%= p.id %>" 
+              class="booking-btn"
+            >
+              Proceed to Booking
+            </a>
+          <% } else if(p.booking_status === 'hold') { %>
+            <span class="status-pill status-hold">● On Hold</span>
+            <p class="status-text">
+              ⚠ This property is currently on hold. Please check back later.
+            </p>
+          <% } else { %>
+            <span class="status-pill status-sold">● Sold</span>
+            <p class="status-text">
+              ❌ This property has been sold and is no longer available.
+            </p>
+          <% } %>
+        </div>
+
+        <div class="contact-block">
+          <div><b>Contact Agent</b></div>
+          <div>Name: <b><%= p.agent_name %></b></div>
+          <div>Phone: <b><%= p.agent_phone %></b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGE GALLERY POPUP -->
+<div id="popup" class="popup" onclick="closeGallery(event)">
+  <span class="close" onclick="closeGallery(event)">✖</span>
+
+  <!-- BIG IMAGE -->
+  <img id="popupMain" class="popup-main" alt="Preview">
+
+  <!-- THUMBNAILS (SCROLLABLE) -->
+  <div class="thumbs">
+    <% images.forEach(img => { %>
+      <img 
+        src="/uploads/properties/<%= img.image_path %>"
+        onclick="changeMain(this.src)"
+        alt="Thumbnail"
+      >
+    <% }) %>
+  </div>
+</div>
+
+<script>
+  function openGallery(imgPath) {
+    document.getElementById("popupMain").src =
+      "/uploads/properties/" + imgPath;
+    document.getElementById("popup").style.display = "flex";
+  }
+
+  function changeMain(src) {
+    document.getElementById("popupMain").src = src;
+  }
+
+  function closeGallery(e) {
+    if (e.target.id === "popup" || e.target.className === "close") {
+      document.getElementById("popup").style.display = "none";
+    }
+  }
+</script>
+
+</body>
+</html>

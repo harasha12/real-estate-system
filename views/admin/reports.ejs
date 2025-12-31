@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agent Reports</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f1f3f6;
+      color: #333;
+    }
+
+    /* HEADER */
+    .header {
+      background: #1f2937;
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .container h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #111827;
+      text-align: center;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead {
+      background: #f9fafb;
+    }
+
+    th {
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.8px;
+      color: #6b7280;
+      padding: 12px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background: #f9fafb;
+    }
+
+    /* BACK BUTTON */
+    .back {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 10px 16px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .back-wrap {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  AGENT REPORTS
+</div>
+
+<div class="container">
+  <h2>Property Summary by Agent</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Agent Name</th>
+        <th>Total Properties</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% reports.forEach(r => { %>
+        <tr>
+          <td><%= r.name %></td>
+          <td><%= r.total_properties %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <div class="back-wrap">
+    <a class="back" href="/admin/dashboard">⬅ Back to Dashboard</a>
+  </div>
+</div>
+
+</body>
+</html>
